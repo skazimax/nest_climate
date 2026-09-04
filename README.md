@@ -38,7 +38,8 @@ python -m unittest discover -s tests -v
 bash -n deployments/yandex_function/deploy.sh
 ```
 
-После настройки `yc`, Lockbox и service account развёртывание выполняется так:
+После настройки профиля `yc`, Lockbox и service account развёртывание
+выполняется так:
 
 ```bash
 export SERVICE_ACCOUNT_ID=...

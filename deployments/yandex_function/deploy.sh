@@ -3,7 +3,7 @@ set -euo pipefail
 
 repo_dir=$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)
 yc_bin=${YC_BIN:-yc}
-yc_profile=${YC_PROFILE:-skazimax-ydb}
+yc_profile=${YC_PROFILE:-default}
 function_name=${FUNCTION_NAME:-nest-environment-collector}
 trigger_name=${TRIGGER_NAME:-nest-environment-collector-5m}
 

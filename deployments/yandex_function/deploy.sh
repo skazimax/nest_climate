@@ -42,9 +42,15 @@ fi
     --secret "environment-variable=NEST_OAUTH_CLIENT_SECRET,id=$NEST_SECRET_ID,key=client-secret" \
     --secret "environment-variable=NEST_OAUTH_REFRESH_TOKEN,id=$NEST_SECRET_ID,key=refresh-token"
 
-"$yc_bin" --profile "$yc_profile" serverless function invoke \
-    "$function_name" --data '{"action":"create-schema"}'
-"$yc_bin" --profile "$yc_profile" serverless function invoke "$function_name"
+if [[ ${SKIP_DIRECT_INVOKE:-0} != 1 ]]; then
+    if ! "$yc_bin" --profile "$yc_profile" serverless function invoke \
+        "$function_name" --data '{"action":"create-schema"}'; then
+        echo "Direct invoke is unavailable; the timer will initialize the schema." >&2
+    fi
+    if ! "$yc_bin" --profile "$yc_profile" serverless function invoke "$function_name"; then
+        echo "Direct invoke is unavailable; verify the first timer invocation in YDB." >&2
+    fi
+fi
 
 if ! "$yc_bin" --profile "$yc_profile" serverless trigger get \
     --name "$trigger_name" >/dev/null 2>&1; then

@@ -7,13 +7,17 @@ from nest_climate.ydb_store import YdbStore
 
 
 TOKEN_PROVIDER = TokenProvider()
+SCHEMA_READY = False
 
 
 def handler(event, context):
+    global SCHEMA_READY
     store = YdbStore()
     try:
-        if isinstance(event, dict) and event.get("action") == "create-schema":
+        if not SCHEMA_READY:
             store.create_table()
+            SCHEMA_READY = True
+        if isinstance(event, dict) and event.get("action") == "create-schema":
             return {"statusCode": 200, "body": json.dumps({"status": "schema-ready"})}
         measurements = collect(TOKEN_PROVIDER)
         store.upsert(measurements)

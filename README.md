@@ -31,6 +31,18 @@ OAuth Client ID, Client Secret и постоянный refresh token перед�
 Yandex Lockbox. Сервисный аккаунт функции получает доступ к Lockbox и право
 записи в существующую YDB. Секреты не хранятся в Git и не выводятся в логи.
 
+## Развёрнутые ресурсы
+
+- Cloud Function: `nest-environment-collector`;
+- timer trigger: `nest-environment-collector-5m`, запуск каждые 5 минут;
+- service account: `nest-climate-collector`;
+- Lockbox secret: `nest-climate-oauth`;
+- YDB: `we-vsp-bot-ydb`;
+- table: `nest_environment_readings`.
+
+При холодном старте функция сама проверяет схему и создаёт таблицу,
+если её ещё нет. Для обычной эксплуатации ручной запуск не требуется.
+
 ## Проверка
 
 ```bash

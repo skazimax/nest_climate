@@ -1,0 +1,12 @@
+[Unit]
+Description=Send weekly Nest climate report each Monday at 08:00 MSK
+
+[Timer]
+OnCalendar=Mon *-*-* 08:00:00 Europe/Moscow
+Persistent=true
+AccuracySec=1s
+RandomizedDelaySec=0
+Unit=nest-climate-report.service
+
+[Install]
+WantedBy=timers.target

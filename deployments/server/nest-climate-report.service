@@ -1,0 +1,32 @@
+[Unit]
+Description=Weekly Nest climate report to Telegram
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=oneshot
+DynamicUser=yes
+WorkingDirectory=/opt/nest-climate-report/app
+EnvironmentFile=/etc/tg-server-control/bot.env
+Environment=YDB_ENDPOINT=grpcs://ydb.serverless.yandexcloud.net:2135
+Environment=YDB_DATABASE=/ru-central1/b1gdnek1vass1304b25b/etno2m5md35qr1c29de2
+Environment=YDB_TABLE=nest_environment_readings
+Environment=REPORT_TIMEZONE=Europe/Moscow
+Environment=ALL_PROXY=socks5h://127.0.0.1:1079
+Environment=all_proxy=socks5h://127.0.0.1:1079
+Environment=NO_PROXY=localhost,127.0.0.1,169.254.169.254,ydb.serverless.yandexcloud.net
+Environment=no_proxy=localhost,127.0.0.1,169.254.169.254,ydb.serverless.yandexcloud.net
+LoadCredential=ydb-key.json:/etc/tg-server-control/ydb-sa-key.json
+ExecStart=/opt/nest-climate-report/venv/bin/python -B -m nest_climate.report --send
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+UMask=0077
+TimeoutStartSec=180

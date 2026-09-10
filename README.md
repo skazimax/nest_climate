@@ -54,7 +54,9 @@ bash -n deployments/yandex_function/deploy.sh
 
 Server-развёртывание в [`deployments/server`](deployments/server/README.md)
 формирует квадратный отчёт температуры и влажности по обоим этажам и отправляет
-его каждый понедельник в 08:00 Europe/Moscow.
+его каждый понедельник в 08:00 Europe/Moscow. Окно отчёта всегда
+скользящее: ровно последние 7 суток до момента запуска, в том числе для
+ручного вызова из Telegram-бота.
 
 После настройки профиля `yc`, Lockbox и service account развёртывание
 выполняется так:

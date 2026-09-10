@@ -58,11 +58,7 @@ def utc_literal(value: datetime) -> str:
 
 
 def report_window(now: datetime | None = None) -> tuple[datetime, datetime]:
-    now = (now or datetime.now(TIMEZONE)).astimezone(TIMEZONE)
-    end = now.replace(hour=8, minute=0, second=0, microsecond=0)
-    end -= timedelta(days=end.weekday())
-    if end > now:
-        end -= timedelta(days=7)
+    end = (now or datetime.now(TIMEZONE)).astimezone(TIMEZONE)
     return end - timedelta(days=7), end
 
 

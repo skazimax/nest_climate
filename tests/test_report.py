@@ -25,14 +25,16 @@ class ReportTest(unittest.TestCase):
     def reading(self, location="floor_1", hours=1, temperature=24.0, humidity=52, online=True):
         return report.Reading(location, self.start + timedelta(hours=hours), temperature, humidity, online)
 
-    def test_window_is_monday_eight(self):
-        start, end = report.report_window(datetime(2026, 9, 9, 15, tzinfo=MOSCOW))
-        self.assertEqual(end, self.end)
-        self.assertEqual(start, datetime(2026, 8, 31, 8, tzinfo=MOSCOW))
+    def test_window_is_seven_days_before_run_time(self):
+        now = datetime(2026, 9, 9, 15, 23, 45, tzinfo=MOSCOW)
+        start, end = report.report_window(now)
+        self.assertEqual(end, now)
+        self.assertEqual(start, datetime(2026, 9, 2, 15, 23, 45, tzinfo=MOSCOW))
 
-    def test_before_monday_run_uses_previous_week(self):
-        _, end = report.report_window(datetime(2026, 9, 7, 7, 59, tzinfo=MOSCOW))
-        self.assertEqual(end, datetime(2026, 8, 31, 8, tzinfo=MOSCOW))
+    def test_scheduled_monday_run_uses_immediately_preceding_week(self):
+        start, end = report.report_window(self.end)
+        self.assertEqual(end, self.end)
+        self.assertEqual(start, self.start)
 
     def test_summary_is_mean_and_coverage(self):
         values = report.summarize([

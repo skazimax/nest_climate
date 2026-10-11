@@ -13,7 +13,20 @@
 `TELEGRAM_ADMIN_USER_IDS`. YDB-ключ передаётся DynamicUser через systemd
 `LoadCredential`; копия секрета не создаётся.
 
-Установка на Ubuntu x86_64 с Python 3.12:
+Установка на Linux x86_64. На CPython 3.12 зависимости ставятся из
+`requirements.lock` с хешами, на другой версии Python — из `requirements.txt`
+(диапазоны версий) без проверки хешей.
+
+Если Telegram доступен напрямую, а `127.0.0.1:1079` ведёт в другой регион
+(`tg-vpn-failover` в режиме `ru`), прокси отключается drop-in:
+
+```bash
+sudo mkdir -p /etc/systemd/system/nest-climate-report.service.d
+printf '[Service]\nUnsetEnvironment=ALL_PROXY all_proxy\n' | \
+  sudo tee /etc/systemd/system/nest-climate-report.service.d/direct-telegram.conf
+```
+
+Установка:
 
 ```bash
 sudo env ENABLE_TIMER=1 bash deployments/server/install.sh

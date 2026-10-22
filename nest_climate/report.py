@@ -124,7 +124,7 @@ def font(size: int, bold: bool = False):
     return ImageFont.truetype(FONT_BOLD if bold else FONT_REGULAR, size)
 
 
-def line_segments(items: tuple[Reading, ...], maximum_gap_minutes: int = 10):
+def line_segments(items: tuple[Reading, ...], maximum_gap_minutes: int = 60):
     segments: list[list[Reading]] = []
     for item in items:
         if not segments or item.measured_at - segments[-1][-1].measured_at > timedelta(minutes=maximum_gap_minutes):
@@ -206,7 +206,7 @@ def render_report(stats: dict[str, FloorStats | None], start: datetime, end: dat
                     x, y = points[0]
                     draw.ellipse((x - 3, y - 3, x + 3, y + 3), fill=COLORS[location])
 
-    draw.text((640, 1125), "Синий — 1 этаж · оранжевый — 2 этаж · разрыв линии — нет данных",
+    draw.text((640, 1125), "Синий — 1 этаж · оранжевый — 2 этаж · разрыв линии — нет данных больше часа",
               font=font(15), fill="#64748b", anchor="mm")
     output = io.BytesIO()
     image.save(output, "PNG", optimize=True)

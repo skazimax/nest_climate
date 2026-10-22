@@ -65,7 +65,7 @@ class ReportTest(unittest.TestCase):
         self.assertEqual(image.format, "PNG")
 
     def test_line_breaks_after_missing_samples(self):
-        items = (self.reading(hours=1), self.reading(hours=1.1), self.reading(hours=2))
+        items = (self.reading(hours=1), self.reading(hours=1.9), self.reading(hours=3))
         self.assertEqual([len(part) for part in report.line_segments(items)], [2, 1])
 
     def test_chart_bounds_expand_for_extreme_readings(self):
